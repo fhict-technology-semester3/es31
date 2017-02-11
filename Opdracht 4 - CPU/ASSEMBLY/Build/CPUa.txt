@@ -1,0 +1,56 @@
+
+CPU2.elf:     file format elf32-avr
+
+
+Disassembly of section .text:
+
+00000000 <__ctors_end>:
+   0:	0f ef       	ldi	r16, 0xFF	; 255
+   2:	04 b9       	out	0x04, r16	; 4
+   4:	01 e0       	ldi	r16, 0x01	; 1
+   6:	11 e0       	ldi	r17, 0x01	; 1
+
+00000008 <main>:
+   8:	0e 94 0c 00 	call	0x18	; 0x18 <clear>
+   c:	0e 94 18 00 	call	0x30	; 0x30 <led>
+  10:	0e 94 10 00 	call	0x20	; 0x20 <wait>
+  14:	0c 94 04 00 	jmp	0x8	; 0x8 <main>
+
+00000018 <clear>:
+  18:	2d 98       	cbi	0x05, 5	; 5
+  1a:	2c 98       	cbi	0x05, 4	; 5
+  1c:	2b 98       	cbi	0x05, 3	; 5
+  1e:	08 95       	ret
+
+00000020 <wait>:
+  20:	20 e0       	ldi	r18, 0x00	; 0
+  22:	39 e0       	ldi	r19, 0x09	; 9
+  24:	4d e3       	ldi	r20, 0x3D	; 61
+
+00000026 <inner>:
+  26:	24 56       	subi	r18, 0x64	; 100
+  28:	30 40       	sbci	r19, 0x00	; 0
+  2a:	40 40       	sbci	r20, 0x00	; 0
+  2c:	e0 f7       	brcc	.-8      	; 0x26 <inner>
+  2e:	08 95       	ret
+
+00000030 <led>:
+  30:	01 17       	cp	r16, r17
+  32:	11 f0       	breq	.+4      	; 0x38 <red>
+  34:	38 f0       	brcs	.+14     	; 0x44 <green>
+  36:	1c f4       	brge	.+6      	; 0x3e <yellow>
+
+00000038 <red>:
+  38:	2b 9a       	sbi	0x05, 3	; 5
+  3a:	10 e0       	ldi	r17, 0x00	; 0
+  3c:	08 95       	ret
+
+0000003e <yellow>:
+  3e:	2c 9a       	sbi	0x05, 4	; 5
+  40:	12 e0       	ldi	r17, 0x02	; 2
+  42:	08 95       	ret
+
+00000044 <green>:
+  44:	2d 9a       	sbi	0x05, 5	; 5
+  46:	11 e0       	ldi	r17, 0x01	; 1
+  48:	08 95       	ret
